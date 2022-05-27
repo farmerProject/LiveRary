@@ -1,0 +1,98 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.7.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+//        jcenter() // jcenter will be removed in the next major release after March 31 2021.
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'kr.co.hh'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//  스프링부트
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-oauth2-client') // 소셜기능 구현시 필요
+//  외부
+    implementation ('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
+
+//  DB 관련
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+//    runtimeOnly 'mysql:mysql-connector-java'
+//    테스트용 h2database
+    implementation('com.h2database:h2')
+//    세션 저장소를 jdbc로 선택
+    implementation('org.springframework.session:spring-session-jdbc')
+    // http request patch
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+//  테스트 관련
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.security:spring-security-test')
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+    testAnnotationProcessor('org.projectlombok:lombok')
+}
+
+// == 아래부터는 react 자동 빌드 관련 코드임 ==
+
+//def frontendDir = "$projectDir/frontend/portfolio-front"
+//sourceSets {
+//    main {
+//        resources {
+//            srcDirs = ["$projectDir/src/main/resources"]
+//        }
+//    }
+//}
+//
+//processResources {
+//    dependsOn "copyReactBuildFiles"
+//}
+//
+//task installReact(type: Exec) {
+//    workingDir "$frontendDir"
+//    inputs.dir "$frontendDir"
+//    group = BasePlugin.BUILD_GROUP
+//    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+//        commandLine "npm.cmd", "audit", "fix"
+//        commandLine 'npm.cmd', 'install'
+//    } else {
+//        commandLine "npm", "audit", "fix"
+//        commandLine 'npm', 'install'
+//    }
+//}
+//
+//task buildReact(type: Exec) {
+//    dependsOn "installReact"
+//    workingDir "$frontendDir"
+//    inputs.dir "$frontendDir"
+//    group = BasePlugin.BUILD_GROUP
+//    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+//        commandLine "npm.cmd", "run-script", "build"
+//    } else {
+//        commandLine "npm", "run-script", "build"
+//    }
+//}
+//
+//task copyReactBuildFiles(type: Copy) {
+//    dependsOn "buildReact"
+//    from "$frontendDir/build"
+//    into "$projectDir/src/main/resources/static"
+//}
+// == react 자동 빌드 코드 끝 ==
+
+
