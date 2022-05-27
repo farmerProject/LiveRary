@@ -26,6 +26,7 @@ hs_err_pid*
 .idea/
 .gradle/
 /client/README.md
+application-oauth.properties
 
 
 # react ignore below
