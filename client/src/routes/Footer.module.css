@@ -1,0 +1,8 @@
+.footer {
+  margin: auto;
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+  background: darkgray;
+  text-align: center;
+}
