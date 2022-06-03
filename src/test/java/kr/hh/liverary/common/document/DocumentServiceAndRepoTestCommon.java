@@ -7,56 +7,40 @@ import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.domain.document.DocumentRepository;
 import kr.hh.liverary.domain.user.User;
 import kr.hh.liverary.domain.user.UserRepository;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import java.util.List;
 
-public class ControllerTest implements TestInterface {
-    @LocalServerPort
-    private int port;
+public class DocumentServiceAndRepoTestCommon implements TestInterface {
     @Autowired
     public CustomOAuth2UserService userService;
     @Autowired
     public UserRepository userRepository;
     @Autowired
     public DocumentRepository repo;
-    @Autowired
-    private WebApplicationContext context;
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     public User mockUser = null;
-    public MockMvc mvc;
-    public String prefixUrl = null;
-
     public String nonLoginWriterIp = "192.168.0.1";
     public String loginWriter = null;
     public String slangTitle1 = "킹받다";
     public String slangTitle2 = "ㅋㅋ루삥뽕";
 
+    public List<Document> allItems = null;
+
+
     @AfterEach
     public void tearDown() {
         repo.deleteAll();
         deleteAllUsers();
+        allItems = null;
     }
 
     @BeforeEach
     public void setUp() {
-        prefixUrl = "http://localhost:" + port + "/api";
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-        saveUser("John Doe", "mymail@mail.com", "http://picture.com/photo/1");
+        OAuthAttributes attr = new OAuthAttributes(null, null, userName, userMail, pictureUrl);
+        mockUser = userService.saveOrUpdate(attr);
         loginWriter = mockUser.getEmail();
     }
 
@@ -67,12 +51,15 @@ public class ControllerTest implements TestInterface {
         .build());
     }
 
-    private void saveUser(String name, String mail, String picture) {
-        OAuthAttributes attr = new OAuthAttributes(null, null, name, mail, picture);
-        mockUser = userService.saveOrUpdate(attr);
+    public Document storeItem(Document document) throws Exception {
+        return repo.save(document);
     }
 
     public void deleteAllUsers() {
         userRepository.deleteAll();
+    }
+
+    public List<Document> findAll() {
+        return repo.findAll();
     }
 }

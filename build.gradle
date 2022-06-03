@@ -46,6 +46,7 @@ dependencies {
     testImplementation('org.springframework.security:spring-security-test')
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.1.0")
     testAnnotationProcessor('org.projectlombok:lombok')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
 }
 
 // == 아래부터는 react 자동 빌드 관련 코드임 ==
