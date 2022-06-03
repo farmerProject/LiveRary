@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             ,"/social/**", "/logo192.png", "/manifest.json"
                             ,"/api/health"
                     ).permitAll()
+                    .antMatchers("/api/v1/documents/**").permitAll()
                     .antMatchers("/api/v1/**").authenticated()
                     .anyRequest().authenticated()
                 .and()
