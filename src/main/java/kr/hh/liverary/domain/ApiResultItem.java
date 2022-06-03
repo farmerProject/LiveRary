@@ -9,15 +9,15 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class ApiResultItem {
-    private HttpStatusMessage message;
     private int code;
     private Object data;
+    private String message;
 
     @Builder
-    public ApiResultItem(HttpStatusMessage message, int code, Object data) {
-        this.message = message;
+    public ApiResultItem(int code, Object data, String message) {
         this.code = code;
         this.data = data;
+        this.message = message;
     }
 }
 
