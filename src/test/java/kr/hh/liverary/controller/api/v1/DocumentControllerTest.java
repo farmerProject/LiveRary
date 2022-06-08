@@ -1,6 +1,7 @@
 package kr.hh.liverary.controller.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.hh.liverary.common.document.DocumentControllerTestCommon;
 import kr.hh.liverary.common.interfaces.CrudInterface;
 import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.dto.DocumentRequestDto;
@@ -22,14 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DocumentControllerTest extends kr.hh.liverary.common.document.DocumentControllerTestCommon {
+public class DocumentControllerTest extends DocumentControllerTestCommon {
     private String apiVersion = "/v1";
 
-    @DisplayName("저장관련테스트")
+    @DisplayName("DocumentController - 저장관련테스트")
     @Nested
     class Create implements CrudInterface.CreateTestInterface {
         @Override
-        @DisplayName("저장성공")
+        @DisplayName("1.1. 저장성공")
         @Test
         public void success() throws Exception {
             // given
@@ -44,8 +45,8 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
             mvc.perform(post(url)
                             .contentType(MediaType.APPLICATION_JSON_UTF8)
                             .content(dtoToJson))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":\"킹받다\"}"))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":{\"title\":" + slangTitle1 +"}}"))
                     .andDo(print())
             ;
 
@@ -56,7 +57,7 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
             assertThat(all.get(0).getWriter()).isEqualTo(loginWriter);
         }
 
-        @DisplayName("저장실패 - 중복된 제목 예외 발생")
+        @DisplayName("2.1. 저장실패 - 중복된 제목 예외 발생")
         @Test
         public void failDuplicatedTitle() throws Exception {
             // given
@@ -83,11 +84,11 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
         }
     }
 
-    @DisplayName("수정관련테스트")
+    @DisplayName("DocumentController - 수정관련테스트")
     @Nested
     class Modify implements CrudInterface.ModifyTestInterface {
         @Override
-        @DisplayName("수정성공")
+        @DisplayName("1.1. 수정성공")
         @WithMockUser(roles = "USER")
         @Test
         public void success() throws Exception {
@@ -104,8 +105,8 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
             mvc.perform(put(url)
                             .contentType(MediaType.APPLICATION_JSON_UTF8)
                             .content(dtoToJson))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json("{\"code\":201,\"data\":\"ㅋㅋ루삥뽕\", \"message\":\"CREATED\"}"))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json("{\"code\":201,\"data\":{\"title\":\"" + slangTitle2 + "\"}, \"message\":\"CREATED\"}"))
                     .andDo(print());
 
             // then
@@ -115,7 +116,7 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
             assertThat(all.get(0).getWriter()).isEqualTo(loginWriter);
         }
 
-        @DisplayName("수정실패 - 존재하지 않는 제목 수정 시도 예외 발생")
+        @DisplayName("2.1. 수정실패 - 존재하지 않는 제목 수정 시도 예외 발생")
         @WithMockUser(roles = "USER")
         @Test
         public void failThereIsNoSuchTitle() throws Exception {
@@ -142,7 +143,7 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
             assertThat(all.get(0).getWriter()).isEqualTo(nonLoginWriterIp);
         }
 
-        @DisplayName("수정실패 - 중복된 제목 예외 발생")
+        @DisplayName("2.2. 수정실패 - 중복된 제목 예외 발생")
         @WithMockUser(roles = "USER")
         @Test
         public void failDuplicatedtitle() throws Exception {
@@ -169,7 +170,7 @@ public class DocumentControllerTest extends kr.hh.liverary.common.document.Docum
             assertThat(all.get(0).getWriter()).isEqualTo(nonLoginWriterIp);
         }
 
-        @DisplayName("수정실패 - 수정하려는 제목의 문서가 이미 존재함. 예외 발생")
+        @DisplayName("2.3. 수정실패 - 수정하려는 제목의 문서가 이미 존재함. 예외 발생")
         @WithMockUser(roles = "USER")
         @Test
         public void failThereIsAlreadySameDocumentInDB() throws Exception {

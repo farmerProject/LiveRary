@@ -36,7 +36,7 @@ public class DocumentServiceTest extends DocumentServiceAndRepoTestCommon {
                     .build();
 
             // when
-            service.create(dto);
+            service.getTitleFromCreatedItem(dto);
 
             // then
             allItems = repo.findAll();
@@ -56,7 +56,7 @@ public class DocumentServiceTest extends DocumentServiceAndRepoTestCommon {
 
             // when
             Assertions.assertThrows(TitleDuplicatedException.class, () -> {
-                service.create(dto);
+                service.getTitleFromCreatedItem(dto);
             });
         }
     }
