@@ -4,13 +4,13 @@ import Login from "./Login.js";
 
 function Home({ showLoginModal, setShowLoginModal }){
     return (
-        <div className={styles.home + " container"}>
+        <div className={styles.home}>
         <p>This is Home.</p>
               {showLoginModal === true ? (
                 <Login showLoginModal={true} setShowLoginModal={setShowLoginModal} />
               ) : null}
 
-        <h1>WOW !</h1>
+        <h1>This is LiveRARY !</h1>
         </div>
     );
 }

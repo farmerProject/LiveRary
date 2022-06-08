@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Home from "./routes/Home";
 import Header from "./routes/Header";
 import Footer from "./routes/Footer";
+import InsertPage from "./routes/InsertPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -40,6 +41,12 @@ function App() {
               showLoginModal={showLoginModal}
               setShowLoginModal={setShowLoginModal}
           />
+        }
+      />
+      <Route
+        path="/insertPage"
+        element={
+          <InsertPage />
         }
       />
       

@@ -1,7 +1,31 @@
 .home {
-    margin: auto;
+    margin: 0;
     display: inline-block;
     width: 100%;
-    height: 800px;
+    height: 700px;
     background: #f2f4f7;
   }
+
+  .inputDiv{
+    margin: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#title{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.test{
+  height: auto;
+  margin-top: 20px;
+}
+
+.formBtn{
+  padding-top: 10px;
+  padding-right: 10px;
+  text-align: right;
+
+}

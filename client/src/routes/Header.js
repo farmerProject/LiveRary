@@ -43,34 +43,38 @@ function Header(props){
     }, []);
 
     return (
-    <div className={styles.header + " container"}>
+    <div className={styles.header}>
         <div className={styles.parent}>
             <div className={styles.left_div}>
-                <h1>LiveRARY</h1>
+                <a href="/" className={styles.header_title}>
+                  <img src="/LiveRARY.png" />
+                </a>
             </div>
             <div className={styles.middle_div}>
+              <div className={styles.btn1}>
                 <InputGroup className="mb-3" id={styles.input}>
                     <FormControl 
                     placeholder="Search Word here...."
                     aria-label="Search Word here...."
                     aria-describedby="basic-addon2"
                     />
-                <Button variant="outline-secondary" id="button-addon2">
+                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active>
                 Search
                 </Button>
                 </InputGroup>
-            </div>
-        
-            <div className={styles.right_div}>
-              {userName === "" ? (
-                         <a
-                           href="/signin"
-                           role="button"
-                           className="btn btn-primary"
-                           onClick={loginBtnClicked}
-                         >
-                           로그인
-                         </a>
+              </div>
+              <div className={styles.btn2}>
+                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active href="/insertPage">
+                  +
+                </Button>
+              </div>
+                
+                <div className={styles.btn3}>
+                {userName === "" ? (
+                        <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active
+                        href="/signin" onClick={loginBtnClicked} >
+                        로그인
+                        </Button>
                        ) : (
                          <Dropdown>
                            <Dropdown.Toggle variant="white" id="dropdown-basic">
@@ -88,7 +92,9 @@ function Header(props){
                              <Dropdown.Item href="/logout">Logout</Dropdown.Item>
                            </Dropdown.Menu>
                          </Dropdown>
-                       )}
+                )}
+           
+                </div>
             </div>
         </div>
         
