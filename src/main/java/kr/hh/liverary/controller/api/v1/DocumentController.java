@@ -5,6 +5,8 @@ import kr.hh.liverary.domain.HttpStatusCode;
 import kr.hh.liverary.dto.DocumentRequestDto;
 import kr.hh.liverary.service.DocumentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,7 +16,7 @@ public class DocumentController {
     private final DocumentService service;
 
     @PostMapping("/v1/documents")
-    public ApiResultItem create(@RequestBody DocumentRequestDto dto) throws Exception{
+    public ResponseEntity create(@RequestBody DocumentRequestDto dto) throws Exception{
         ApiResultItem result = null;
 
         String title = service.create(dto);
@@ -24,11 +26,11 @@ public class DocumentController {
                 .data(title)
         .build();
 
-        return result;
+        return new ResponseEntity(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/v1/documents/{title}")
-    public ApiResultItem modify(@PathVariable String title, @RequestBody DocumentRequestDto dto) throws Exception{
+    public ResponseEntity modify(@PathVariable String title, @RequestBody DocumentRequestDto dto) throws Exception{
         ApiResultItem result = null;
 
             String modifiedTitle = service.modify(title, dto);
@@ -38,6 +40,6 @@ public class DocumentController {
                     .data(modifiedTitle)
             .build();
 
-        return result;
+        return new ResponseEntity(result, HttpStatus.CREATED);
     }
 }

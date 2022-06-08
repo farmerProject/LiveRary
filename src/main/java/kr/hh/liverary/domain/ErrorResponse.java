@@ -27,11 +27,6 @@ public class ErrorResponse {
         return new ErrorResponse();
     }
 
-//    public ErrorResponse code(String code) {
-//        this.code = code;
-//        return this;
-//    }
-
     public ErrorResponse status(int httpStatus) {
         this.httpStatus = httpStatus;
         return this;
