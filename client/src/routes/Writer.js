@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { InputGroup } from "react-bootstrap";
-import { FormControl } from "react-bootstrap";
+// import { InputGroup } from "react-bootstrap";
+// import { FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import styles from "./Home.module.css";
 import React, { useRef } from "react";
@@ -51,7 +51,7 @@ function Writer({userId}){
       };///api/v1/definitions [post]/api/v1/documents [post]
       const contentDto = {
         writer: userId,
-        content: document,
+        content: documentCollection,
         document: {
           title: title
         },
