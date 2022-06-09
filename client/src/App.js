@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import Home from "./routes/Home";
 import Header from "./routes/Header";
 import Footer from "./routes/Footer";
-import InsertPage from "./routes/InsertPage";
+import Writer from "./routes/Writer";
+import Viewer from "./routes/Viewer";
+import SearchView from "./routes/SearchView";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -44,12 +46,28 @@ function App() {
         }
       />
       <Route
-        path="/insertPage"
+        path="/writer"
         element={
-          <InsertPage />
+          <Writer 
+          userName={userName}
+          userId={userId}
+          />
         }
       />
-      
+      <Route
+        path="/viewer"
+        element={
+          <Viewer 
+          />
+        }
+      />
+      <Route
+        path="/searchView"
+        element={
+          <SearchView 
+          />
+        }
+      />
     </Routes>
     <hr />
     <Footer />

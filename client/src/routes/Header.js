@@ -11,7 +11,6 @@ import axios from "axios";
 
 function Header(props){
   const [userName, setUserName] = useState("");
-  //hmp add
   const [userId, setUserId] = useState("");
 
   const imgStyle = {
@@ -25,7 +24,6 @@ function Header(props){
           setUserName(response.data.name);
           props.setUserName(response.data.name);
 
-          //hmp add
           setUserId(response.data.id);
           props.setUserId(response.data.id);
 
@@ -33,11 +31,11 @@ function Header(props){
         .catch((error) => {});
     };
 
-    const loginBtnClicked = (e) => {
-      e.preventDefault();
+    const loginBtnClicked = (event) => {
+      event.preventDefault();
       props.setShowLoginModal(true);
     };
-
+     
     useEffect(() => {
       request();
     }, []);
@@ -58,13 +56,15 @@ function Header(props){
                     aria-label="Search Word here...."
                     aria-describedby="basic-addon2"
                     />
-                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active>
+                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active
+                href={`/searchView`}
+                >
                 Search
                 </Button>
                 </InputGroup>
               </div>
               <div className={styles.btn2}>
-                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active href="/insertPage">
+                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active href="/writer">
                   +
                 </Button>
               </div>
