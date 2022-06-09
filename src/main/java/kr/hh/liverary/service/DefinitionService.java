@@ -72,4 +72,9 @@ public class DefinitionService {
         if(document == null) throw new NoSuchDocumentException();
         return repo.findByDocument(document);
     }
+
+    @Transactional
+    public List<Definition> findTop50ByOrderByIdDesc() throws Exception{
+        return repo.findTop50ByOrderByIdDesc();
+    }
 }

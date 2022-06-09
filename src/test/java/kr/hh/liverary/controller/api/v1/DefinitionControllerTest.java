@@ -266,6 +266,69 @@ public class DefinitionControllerTest extends DefinitionControllerTestCommon {
                     .andDo(print());
         }
 
+        @DisplayName("1.3. 50개의 최신 definition-collection 검색")
+        @Test
+        public void getRandomItems() throws Exception {
+            // given
+            Document tempDocument = saveDocument("temp", "tempuser");
+            Definition content2Item = storeItem(nonLoginWriterIp, content2, defaultDocument);
+            Definition defaultContentItem = storeItem(nonLoginWriterIp, defaultContent, defaultDocument);
+            Definition tempDefinition =  storeItem("tempuser", "꼴받다", tempDocument);
+            String url = prefixUrl + apiVersion + "/definitions/latest/50";
+
+            //////// expected //////////
+            String defaultDocumentJsonStr =
+                    "{\"id\":" + defaultDocument.getId() + "," +
+                    "\"title\":\"" + defaultDocument.getTitle() + "\"," +
+                    "\"writer\":\"" + defaultDocument.getWriter() + "\"}";
+
+            String tempDocumentJsonStr =
+                    "{\"id\":" + tempDocument.getId() + "," +
+                    "\"title\":\"" + tempDocument.getTitle() + "\"," +
+                    "\"writer\":\"" + tempDocument.getWriter() + "\"}"
+            ;
+
+
+            String content2ItemJsonStr =
+                    "{\"id\":" + content2Item.getId() + "," +
+                    "\"writer\":\"" + nonLoginWriterIp + "\"," +
+                    "\"content\":\"" + content2 + "\"," +
+                    "\"document\":" + defaultDocumentJsonStr + "}"
+            ;
+            String defaultContentItemJsonStr =
+                    "{\"id\":" + defaultContentItem.getId() + "," +
+                    "\"writer\":\"" + nonLoginWriterIp + "\"," +
+                    "\"content\":\"" + defaultContent +  "\"," +
+                    "\"document\":" + defaultDocumentJsonStr + "}"
+                    ;
+            String tempDefinitionJsonStr =
+                    "{\"id\":" + tempDefinition.getId() + "," +
+                    "\"writer\":\"" + tempDefinition.getWriter() + "\"," +
+                    "\"content\":\"" + tempDefinition.getContent() +  "\"," +
+                    "\"document\":" + tempDocumentJsonStr + "}"
+                    ;
+
+            String expectedContent = "{" +
+                    "\"code\":200," +
+                    "\"data\":{" +
+                        "\"size\":3," +
+                        "\"items\":["
+                    + content2ItemJsonStr + ","
+                    + defaultContentItemJsonStr + ","
+                    + tempDefinitionJsonStr +
+                    "]" +
+                        "}," +
+                    "\"message\":\"OK\"}";
+
+            // then
+            mvc.perform(get(url)
+                            .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedContent))
+                    .andDo(print());
+        }
+
         @DisplayName("2.1. 존재하지 않는 document 제목으로 문서 검색-예외발생")
         @Test
         public void failFindAllNoSuchDocument() throws Exception {

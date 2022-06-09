@@ -209,6 +209,22 @@ public class DefinitionServiceTest extends DefinitionServiceAndRepoTest {
             assertThat(list.size()).isEqualTo(0);
         }
 
+        @DisplayName("1.3.  50개의 최신 definition-collection 검색")
+        @Test
+        public void getRandomItems() throws Exception {
+            // given
+            Document tempDocument = saveDocument("temp", "tempuser");
+            storeItem(loginWriter, defaultContent, defaultDocument);
+            storeItem(loginWriter, content2, defaultDocument);
+            storeItem("tempuser", "꼴받다", tempDocument);
+
+            List<Definition> list = service.findTop50ByOrderByIdDesc();
+
+            // then
+            assertThat(list.size()).isEqualTo(3);
+        }
+
+
         @DisplayName("2.1. 존재하지 않는 document 제목으로 문서 검색-예외발생")
         @Test
         public void failFindAllNoSuchDocument() throws Exception {
@@ -221,5 +237,7 @@ public class DefinitionServiceTest extends DefinitionServiceAndRepoTest {
             });
 
         }
+
+
     }
 }

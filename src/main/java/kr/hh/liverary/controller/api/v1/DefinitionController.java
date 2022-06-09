@@ -71,7 +71,6 @@ public class DefinitionController {
 
     @GetMapping("/v1/documents/{title}/definitions")
     public ResponseEntity findByDocument(@PathVariable String title) throws Exception {
-//        ApiResultItemList resultItemsList = null;
         ApiResultItem result = null;
         Map<String, Object> data = new HashMap<String, Object>();
 
@@ -86,6 +85,17 @@ public class DefinitionController {
         .build();
         return new ResponseEntity(result, HttpStatus.OK);
     }
+
+    @GetMapping("/v1/definitions/latest/50")
+    public ResponseEntity findTop50ByOrderByIdDesc() throws Exception {
+        // 50개
+        ApiResultItem result = null;
+        Map<String, Object> data = new HashMap<String, Object>();
+
+        List<Definition> contentList = service.findTop50ByOrderByIdDesc();
+        data.put("size", contentList.size());
+        data.put("items", contentList);
+
         result = ApiResultItem.builder()
                 .code(HttpStatusCode.OK.getCode())
                 .message(HttpStatusCode.OK.toString())

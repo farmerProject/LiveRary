@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DefinitionRepository extends JpaRepository<Definition, Long> {
     public List<Object> findByDocument(Document document);
+    public List<Definition> findTop50ByOrderByIdDesc();
 }
