@@ -1,0 +1,18 @@
+.oauth-google .oauth-google-inner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form_signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  background-color: white;
+}
+
+.height_100_p {
+  height: 100%;
+}

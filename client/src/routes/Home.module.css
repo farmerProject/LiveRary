@@ -1,0 +1,47 @@
+.home {
+    margin: 0;
+    display: inline-block;
+    width: 100%;
+    height: 700px;
+  }
+
+  .inputDiv{
+    margin: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#title{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.writer{
+  height: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.formBtn{
+  padding-top: 10px;
+  padding-right: 10px;
+  text-align: right;
+
+}
+
+/* Viewer css */
+.viewer_title{
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  font-weight: bolder;
+  font-size: 20pt;
+}
+
+.viewer_content{
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  font-size: 20pt;
+}
