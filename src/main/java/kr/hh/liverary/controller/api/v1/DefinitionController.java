@@ -2,8 +2,9 @@ package kr.hh.liverary.controller.api.v1;
 
 import kr.hh.liverary.domain.ApiResultItem;
 import kr.hh.liverary.domain.HttpStatusCode;
+import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.dto.ContentRequestDto;
-import kr.hh.liverary.service.ContentService;
+import kr.hh.liverary.service.DefinitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 @RestController
-public class ContentController {
+public class DefinitionController {
 
-    private final ContentService service;
+    private final DefinitionService service;
 
     @PostMapping("/v1/definitions")
     public ResponseEntity createDefinition(@RequestBody ContentRequestDto dto) throws Exception {
@@ -84,5 +85,13 @@ public class ContentController {
                 .data(data)
         .build();
         return new ResponseEntity(result, HttpStatus.OK);
+    }
+        result = ApiResultItem.builder()
+                .code(HttpStatusCode.OK.getCode())
+                .message(HttpStatusCode.OK.toString())
+                .data(data)
+                .build();
+        return new ResponseEntity(result, HttpStatus.OK);
+
     }
 }

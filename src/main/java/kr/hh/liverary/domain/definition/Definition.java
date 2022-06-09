@@ -1,4 +1,4 @@
-package kr.hh.liverary.domain.content;
+package kr.hh.liverary.domain.definition;
 
 import kr.hh.liverary.domain.document.Document;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @RequiredArgsConstructor
 @Entity
-public class Content {
+public class Definition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,13 +26,13 @@ public class Content {
     private Document document;
 
     @Builder
-    public Content(String writer, String content, Document document) {
+    public Definition(String writer, String content, Document document) {
         this.writer = writer;
         this.content = content;
         this.document = document;
     }
 
-    public Content update(String writer, String content) {
+    public Definition update(String writer, String content) {
         this.writer = writer;
         this.content = content;
         return this;

@@ -1,7 +1,7 @@
 package kr.hh.liverary.service;
 
-import kr.hh.liverary.domain.content.Content;
-import kr.hh.liverary.domain.content.ContentRepository;
+import kr.hh.liverary.domain.definition.Definition;
+import kr.hh.liverary.domain.definition.DefinitionRepository;
 import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
 import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
@@ -15,9 +15,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class ContentService {
+public class DefinitionService {
 
-    private final ContentRepository repo;
+    private final DefinitionRepository repo;
     private final DocumentService documentService;
 
     @Transactional
@@ -26,7 +26,12 @@ public class ContentService {
         Document document = documentService.findByTitle(dto.getDocument().getTitle());
 
         if(document == null) throw new NoSuchDocumentException();
-        Long savedItemId = storeItem(dto.toEntity()).getId();
+        Definition definition = Definition.builder()
+                .content(dto.getContent())
+                .writer(dto.getWriter())
+                .document(document)
+        .build();
+        Long savedItemId = storeItem(definition).getId();
         return savedItemId;
     }
 
@@ -49,15 +54,15 @@ public class ContentService {
 //        return savedItemId;
 //    }
 
-    private Content storeItem(Content content) throws Exception {
+    private Definition storeItem(Definition content) throws Exception {
         return repo.save(content);
     }
 
     @Transactional
     public Long modify(Long contentId, ContentRequestDto contentDto) throws Exception {
-        Content targetContent = repo.findById(contentId)
+        Definition targetContent = repo.findById(contentId)
                 .orElseThrow(() -> new RequestedItemIsNotFoundException());
-        Content modified = targetContent.update(contentDto.getWriter(), contentDto.getContent());
+        Definition modified = targetContent.update(contentDto.getWriter(), contentDto.getContent());
         return modified.getId();
     }
 

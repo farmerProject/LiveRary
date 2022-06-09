@@ -1,6 +1,6 @@
 package kr.hh.liverary.dto;
 
-import kr.hh.liverary.domain.content.Content;
+import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.domain.document.Document;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +22,8 @@ public class ContentRequestDto {
         this.document = document;
     }
 
-    public Content toEntity() {
-        return Content.builder()
+    public Definition toEntity() {
+        return Definition.builder()
                 .content(content)
                 .writer(writer)
                 .document(document)

@@ -1,10 +1,10 @@
-package kr.hh.liverary.domain.content;
+package kr.hh.liverary.domain.definition;
 
 import kr.hh.liverary.domain.document.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ContentRepository extends JpaRepository<Content, Long> {
+public interface DefinitionRepository extends JpaRepository<Definition, Long> {
     public List<Object> findByDocument(Document document);
 }

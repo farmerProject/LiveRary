@@ -1,8 +1,8 @@
 package kr.hh.liverary.service;
 
-import kr.hh.liverary.common.content.ContentServiceAndRepoTest;
+import kr.hh.liverary.common.content.DefinitionServiceAndRepoTest;
 import kr.hh.liverary.common.interfaces.CrudInterface;
-import kr.hh.liverary.domain.content.Content;
+import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
 import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
@@ -20,10 +20,10 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-public class ContentServiceTest extends ContentServiceAndRepoTest {
+public class DefinitionServiceTest extends DefinitionServiceAndRepoTest {
 
     @Autowired
-    private ContentService service;
+    private DefinitionService service;
 
     @DisplayName("ContentService - 추가관련테스트")
     @Nested
@@ -44,9 +44,9 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
             Long returnedId = service.create(dto);
 
             // then
-            List<Content> allItems = repo.findAll();
+            List<Definition> allItems = repo.findAll();
             assertThat(allItems.size()).isEqualTo(1);
-            Content savedItem = allItems.get(0);
+            Definition savedItem = allItems.get(0);
             assertThat(savedItem.getContent()).isEqualTo(defaultContent);
             assertThat(savedItem.getWriter()).isEqualTo(loginWriter);
             assertThat(savedItem.getDocument().getId()).isEqualTo(defaultDocument.getId());
@@ -97,7 +97,7 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
             });
 
             // then
-            List<Content> allItems = repo.findAll();
+            List<Definition> allItems = repo.findAll();
             assertThat(allItems.size()).isEqualTo(0);
         }
 
@@ -122,7 +122,7 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
             });
 
             // then
-            List<Content> allItems = repo.findAll();
+            List<Definition> allItems = repo.findAll();
             assertThat(allItems.size()).isEqualTo(0);
         }
     }
@@ -136,7 +136,7 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
         @Test
         public void success() throws Exception {
             // given
-            Content defaultItem = storeItem(loginWriter, defaultContent, defaultDocument);
+            Definition defaultItem = storeItem(loginWriter, defaultContent, defaultDocument);
             ContentRequestDto dto = ContentRequestDto.builder()
                     .content(content2)
                     .writer(nonLoginWriterIp)
@@ -147,9 +147,9 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
             service.modify(defaultItem.getId(), dto);
 
             // then
-            List<Content> allItems = repo.findAll();
+            List<Definition> allItems = repo.findAll();
             assertThat(allItems.size()).isEqualTo(1);
-            Content foundItem = allItems.get(0);
+            Definition foundItem = allItems.get(0);
             assertThat(foundItem.getContent()).isEqualTo(content2);
             assertThat(foundItem.getWriter()).isEqualTo(nonLoginWriterIp);
         }
@@ -158,7 +158,7 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
         @Test
         public void failNoSuchDefinition() throws Exception {
             // given
-            Content defaultItem = storeItem(loginWriter, defaultContent, defaultDocument);
+            Definition defaultItem = storeItem(loginWriter, defaultContent, defaultDocument);
             ContentRequestDto dto = ContentRequestDto.builder()
                     .content(content2)
                     .writer(nonLoginWriterIp)
@@ -171,9 +171,9 @@ public class ContentServiceTest extends ContentServiceAndRepoTest {
             });
 
             // then
-            List<Content> allItems = repo.findAll();
+            List<Definition> allItems = repo.findAll();
             assertThat(allItems.size()).isEqualTo(1);
-            Content foundItem = allItems.get(0);
+            Definition foundItem = allItems.get(0);
             assertThat(foundItem.getContent()).isEqualTo(defaultContent);
             assertThat(foundItem.getWriter()).isEqualTo(loginWriter);
         }

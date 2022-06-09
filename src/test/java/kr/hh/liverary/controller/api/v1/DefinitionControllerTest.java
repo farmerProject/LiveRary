@@ -1,9 +1,9 @@
 package kr.hh.liverary.controller.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.hh.liverary.common.content.ContentControllerTestCommon;
+import kr.hh.liverary.common.content.DefinitionControllerTestCommon;
 import kr.hh.liverary.common.interfaces.CrudInterface;
-import kr.hh.liverary.domain.content.Content;
+import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.dto.ContentRequestDto;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ContentControllerTest extends ContentControllerTestCommon {
+public class DefinitionControllerTest extends DefinitionControllerTestCommon {
     private String apiVersion = "/v1";
 
     @DisplayName("ContentController - 저장관련테스트")
@@ -48,9 +48,9 @@ public class ContentControllerTest extends ContentControllerTestCommon {
                     .andExpect(status().isCreated())
                     .andDo(print());
             // then
-            List<Content> all = contentRepo.findAll();
+            List<Definition> all = contentRepo.findAll();
             assertThat(all.size()).isEqualTo(1);
-            Content content = all.get(0);
+            Definition content = all.get(0);
             assertThat(content.getContent()).isEqualTo(defaultContent);
             assertThat(content.getWriter()).isEqualTo(loginWriter);
             assertThat(content.getDocument().getTitle()).isEqualTo(defaultDocument.getTitle());
@@ -76,7 +76,7 @@ public class ContentControllerTest extends ContentControllerTestCommon {
 //                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":1}"))
                     .andDo(print());
             // then
-            List<Content> all = contentRepo.findAll();
+            List<Definition> all = contentRepo.findAll();
             assertThat(all.size()).isEqualTo(0);
         }
 
@@ -105,7 +105,7 @@ public class ContentControllerTest extends ContentControllerTestCommon {
 //                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":1}"))
                     .andDo(print());
             // then
-            List<Content> all = contentRepo.findAll();
+            List<Definition> all = contentRepo.findAll();
             assertThat(all.size()).isEqualTo(0);
         }
 
@@ -154,7 +154,7 @@ public class ContentControllerTest extends ContentControllerTestCommon {
         @Test
         public void success() throws Exception {
             // given
-            Content savedItem = storeItem(nonLoginWriterIp, content2, defaultDocument);
+            Definition savedItem = storeItem(nonLoginWriterIp, content2, defaultDocument);
             String url = prefixUrl + apiVersion + "/definitions/" + savedItem.getId();
             ContentRequestDto requestDto = ContentRequestDto.builder()
                     .content(defaultContent)
@@ -171,9 +171,9 @@ public class ContentControllerTest extends ContentControllerTestCommon {
                     .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":{\"id\":" + savedItem.getId() + "}}"))
                     .andDo(print());
             // then
-            List<Content> all = contentRepo.findAll();
+            List<Definition> all = contentRepo.findAll();
             assertThat(all.size()).isEqualTo(1);
-            Content content = all.get(0);
+            Definition content = all.get(0);
             assertThat(content.getContent()).isEqualTo(defaultContent);
             assertThat(content.getWriter()).isEqualTo(loginWriter);
             assertThat(content.getDocument().getTitle()).isEqualTo(defaultDocument.getTitle());
@@ -183,7 +183,7 @@ public class ContentControllerTest extends ContentControllerTestCommon {
         @Test
         public void failNoSuchDefinition() throws Exception {
             // given
-            Content savedItem = storeItem(nonLoginWriterIp, content2, defaultDocument);
+            Definition savedItem = storeItem(nonLoginWriterIp, content2, defaultDocument);
             String url = prefixUrl + apiVersion + "/definitions/" + savedItem.getId()+2;
             ContentRequestDto requestDto = ContentRequestDto.builder()
                     .content(defaultContent)
@@ -200,9 +200,9 @@ public class ContentControllerTest extends ContentControllerTestCommon {
 //                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":1}"))
                     .andDo(print());
             // then
-            List<Content> all = contentRepo.findAll();
+            List<Definition> all = contentRepo.findAll();
             assertThat(all.size()).isEqualTo(1);
-            Content content = all.get(0);
+            Definition content = all.get(0);
             assertThat(content.getContent()).isEqualTo(content2);
             assertThat(content.getWriter()).isEqualTo(nonLoginWriterIp);
             assertThat(content.getDocument().getTitle()).isEqualTo(defaultDocument.getTitle());
@@ -218,8 +218,8 @@ public class ContentControllerTest extends ContentControllerTestCommon {
         @Test
         public void findAll() throws Exception {
             // given
-            Content content2Item = storeItem(nonLoginWriterIp, content2, defaultDocument);
-            Content defaultContentItem = storeItem(nonLoginWriterIp, defaultContent, defaultDocument);
+            Definition content2Item = storeItem(nonLoginWriterIp, content2, defaultDocument);
+            Definition defaultContentItem = storeItem(nonLoginWriterIp, defaultContent, defaultDocument);
             String url = prefixUrl + apiVersion + "/documents/" + defaultDocument.getTitle() + "/definitions";
             String documentJsonStr = "{\"id\":" + defaultDocument.getId() + "," +
                             "\"title\":" + defaultDocument.getTitle() + "," +
