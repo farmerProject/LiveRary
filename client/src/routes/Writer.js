@@ -31,16 +31,11 @@ function Writer({userId}){
 	const editorRef = useRef();
 
     const onChangeTitleText = (event) => {
-		console.log(event.target.value);
         const title = event.target.value;
-
         setTitle(title);
 	}
 	const onChangeEditorTextHandler = () => {
-		console.log("editor:::"+editorRef.current.getInstance().getMarkdown());
-
         const document = editorRef.current.getInstance().getMarkdown();
-
         setDocumentCollection(document);
 	}
 
@@ -48,17 +43,17 @@ function Writer({userId}){
       const documentDto = {
           title:title,
           writer: userId,
-      };///api/v1/definitions [post]/api/v1/documents [post]
+      };
       const contentDto = {
         writer: userId,
         content: documentCollection,
         document: {
           title: title
         },
-      };///api/v1/definitions [post]/api/v1/documents [post]
+      };
         await axios 
-          .all([axios.post("http://localhost:8080/api/v1/definitions", documentDto)
-               ,axios.post("http://localhost:8080/api/v1/documents", contentDto)])
+          .all([await axios.post("http://localhost:8080/api/v1/documents", documentDto)
+               ,await axios.post("http://localhost:8080/api/v1/definitions", contentDto)])
           .then((response) => {
             alert("저장되었습니다.");
           })
