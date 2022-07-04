@@ -95,7 +95,7 @@ public class DocumentServiceTest extends DocumentServiceAndRepoTestCommon {
                     .build();
 
             // when
-            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Assertions.assertThrows(TitleDuplicatedException.class, () -> {
                 service.modify(slangTitle1, dto);
             });
         }
