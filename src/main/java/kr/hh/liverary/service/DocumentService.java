@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -58,5 +59,9 @@ public class DocumentService {
 
     public Document findByTitle(String title) {
         return repo.findByTitle(title);
+    }
+
+    public List<Document> findByTitleContaining(String keyword) {
+        return repo.findByTitleContaining(keyword);
     }
 }
