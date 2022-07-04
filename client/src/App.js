@@ -7,6 +7,7 @@ import Writer from "./routes/Writer";
 import Viewer from "./routes/Viewer";
 import SearchView from "./routes/SearchView";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axios from "axios";
 
 function App() {
   
@@ -14,16 +15,18 @@ function App() {
     height: "100%",
     width: "100%",
   };
+  const [userName, setUserName] = useState("");
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const [userId, setUserId] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userIp, setUserIp] = useState("");
 
   useEffect(() => {
     const appName = "LiveRARY";
     document.title = appName;
   }, []);
 
-  const [userName, setUserName] = useState("");
-  const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const [userId, setUserId] = useState("");
 
   return (
     <div style={style}>
@@ -32,6 +35,8 @@ function App() {
         setUserName={setUserName}
         setShowLoginModal={setShowLoginModal}
         setUserId={setUserId}
+        setUserEmail={setUserEmail}
+        setUserIp={setUserIp}
     />
     <hr />
     <Routes>
@@ -51,6 +56,8 @@ function App() {
           <Writer 
           userName={userName}
           userId={userId}
+          userEmail={userEmail}
+          userIp={userIp}
           />
         }
       />
@@ -65,6 +72,9 @@ function App() {
         path="/searchView"
         element={
           <SearchView 
+          userName={userName}
+          showLoginModal={showLoginModal}
+          setShowLoginModal={setShowLoginModal}
           />
         }
       />
