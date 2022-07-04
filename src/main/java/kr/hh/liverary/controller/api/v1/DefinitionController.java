@@ -6,6 +6,7 @@ import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.dto.ContentRequestDto;
 import kr.hh.liverary.service.DefinitionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,12 @@ import java.util.Map;
 @RequestMapping(value = "/api")
 @RestController
 public class DefinitionController {
+    private DefinitionService service;
 
-    private final DefinitionService service;
+    @Autowired
+    public DefinitionController(DefinitionService definitionService) {
+        this.service = definitionService;
+    }
 
     @PostMapping("/v1/definitions")
     public ResponseEntity createDefinition(@RequestBody ContentRequestDto dto) throws Exception {
@@ -33,7 +38,7 @@ public class DefinitionController {
                 .code(HttpStatusCode.CREATED.getCode())
                 .message(HttpStatusCode.CREATED.toString())
                 .data(data)
-        .build();
+                .build();
 
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
@@ -64,7 +69,7 @@ public class DefinitionController {
                 .code(HttpStatusCode.CREATED.getCode())
                 .message(HttpStatusCode.CREATED.toString())
                 .data(data)
-        .build();
+                .build();
 
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
@@ -82,7 +87,7 @@ public class DefinitionController {
                 .code(HttpStatusCode.OK.getCode())
                 .message(HttpStatusCode.OK.toString())
                 .data(data)
-        .build();
+                .build();
         return new ResponseEntity(result, HttpStatus.OK);
     }
 

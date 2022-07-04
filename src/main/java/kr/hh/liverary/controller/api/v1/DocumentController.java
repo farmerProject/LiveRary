@@ -5,6 +5,7 @@ import kr.hh.liverary.domain.HttpStatusCode;
 import kr.hh.liverary.dto.DocumentRequestDto;
 import kr.hh.liverary.service.DocumentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,12 @@ import java.util.Map;
 @RequestMapping(value = "/api")
 @RestController
 public class DocumentController {
-    private final DocumentService service;
+    private DocumentService service;
+
+    @Autowired
+    public DocumentController(DocumentService service) {
+        this.service = service;
+    }
 
     @PostMapping("/v1/documents")
     public ResponseEntity create(@RequestBody DocumentRequestDto dto) throws Exception{
@@ -30,7 +36,7 @@ public class DocumentController {
                 .code(HttpStatusCode.CREATED.getCode())
                 .message(HttpStatusCode.CREATED.toString())
                 .data(data)
-        .build();
+                .build();
 
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
@@ -40,14 +46,14 @@ public class DocumentController {
         ApiResultItem result = null;
         Map<String, String> data = new HashMap<String, String>();
 
-            String modifiedTitle = service.modify(title, dto);
-            data.put("title", modifiedTitle);
+        String modifiedTitle = service.modify(title, dto);
+        data.put("title", modifiedTitle);
 
-            result = ApiResultItem.builder()
-                    .code(HttpStatusCode.CREATED.getCode())
-                    .message(HttpStatusCode.CREATED.toString())
-                    .data(data)
-            .build();
+        result = ApiResultItem.builder()
+                .code(HttpStatusCode.CREATED.getCode())
+                .message(HttpStatusCode.CREATED.toString())
+                .data(data)
+                .build();
 
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
