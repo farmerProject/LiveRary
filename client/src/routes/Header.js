@@ -12,6 +12,8 @@ import axios from "axios";
 function Header(props){
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userIp, setUserIp] = useState("");
 
   const imgStyle = {
     height: 35,
@@ -27,6 +29,9 @@ function Header(props){
           setUserId(response.data.id);
           props.setUserId(response.data.id);
 
+          setUserEmail(response.data);
+          props.setUserEmail(response.data.email);
+
         })
         .catch((error) => {});
     };
@@ -35,8 +40,20 @@ function Header(props){
       event.preventDefault();
       props.setShowLoginModal(true);
     };
-     
+
+    const getUserIp = () => {
+      axios
+      .get("https://geolocation-db.com/json/0f761a30-fe14-11e9-b59f-e53803842572")
+        .then((response) => {
+          setUserIp(response.data.IPv4);
+          props.setUserIp(response.data.IPv4);
+          
+        })
+        .catch((error) => {});
+    };
+    
     useEffect(() => {
+      getUserIp();
       request();
     }, []);
 

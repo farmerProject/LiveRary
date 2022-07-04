@@ -5,7 +5,7 @@ import styles from "./Home.module.css";
 // import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 
-function ViewList({id, coverImg , title , summary , genres }){
+function ViewList({id, content , title}){
     
     return (
     <div>
@@ -14,7 +14,7 @@ function ViewList({id, coverImg , title , summary , genres }){
         </div>
         <div className={styles.viewer_content}>
             <Viewer
-            initialValue={summary} />
+            initialValue={content} />
         </div>
         <hr></hr>
     </div>

@@ -22,8 +22,9 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 
 
-function Writer({userId}){
+function Writer({userId, userEmail, userIp}){
 
+    const [writer , setWriter] = useState("");
     const [title , setTitle] = useState("");
     const [documentCollection , setDocumentCollection] = useState("");
     let navigate = useNavigate();
@@ -41,27 +42,36 @@ function Writer({userId}){
 
     const onClickSave = async () => {
       const documentDto = {
-          title:title,
-          writer: userId,
+          title: title,
+          writer: writer,
       };
       const contentDto = {
-        writer: userId,
+        writer: writer,
         content: documentCollection,
         document: {
           title: title
         },
       };
-        await axios 
+      axios
           .all([await axios.post("http://localhost:8080/api/v1/documents", documentDto)
                ,await axios.post("http://localhost:8080/api/v1/definitions", contentDto)])
           .then((response) => {
             alert("저장되었습니다.");
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.response);
           });
         navigate("/");
       };
+
+      useEffect(() => {
+        if(userEmail !== ""){
+            setWriter(userEmail);
+        }
+        else{
+            setWriter(userIp);
+        }
+      }, [userIp]);
 
     return (
         <div>
@@ -85,7 +95,7 @@ function Writer({userId}){
             <div className={styles.formBtn}>
                 <Button 
                     variant="btn btn-dark" 
-                    type="submit"
+                    //type="submit"
                     className="submitBtn"
                     onClick={onClickSave}
                     >
