@@ -17,7 +17,7 @@ public class DefaultController {
 
     @GetMapping("/health")
     public ResponseEntity healthCheck() throws Exception {
-        ApiResultItem result = null;
+        ApiResultItem result;
         Map<String, String> data = new HashMap<String, String>();
 
         data.put("status", "OK");
@@ -31,5 +31,4 @@ public class DefaultController {
         return new ResponseEntity(result, HttpStatus.OK);
 
     }
-
 }
