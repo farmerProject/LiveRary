@@ -8,6 +8,7 @@ import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
 import kr.hh.liverary.domain.exception.document.NoSuchDocumentException;
 import kr.hh.liverary.dto.ContentRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,8 +18,14 @@ import java.util.List;
 @Service
 public class DefinitionService {
 
-    private final DefinitionRepository repo;
-    private final DocumentService documentService;
+    private DefinitionRepository repo;
+    private DocumentService documentService;
+
+    @Autowired
+    public DefinitionService(DefinitionRepository repo, DocumentService documentService) {
+        this.repo = repo;
+        this.documentService = documentService;
+    }
 
     @Transactional
     public Long create(ContentRequestDto dto) throws Exception {
@@ -30,7 +37,7 @@ public class DefinitionService {
                 .content(dto.getContent())
                 .writer(dto.getWriter())
                 .document(document)
-        .build();
+                .build();
         Long savedItemId = storeItem(definition).getId();
         return savedItemId;
     }

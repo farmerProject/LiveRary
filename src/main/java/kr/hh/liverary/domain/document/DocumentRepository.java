@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     public Document findByTitle(String title);
+    public List<Document> findByTitleContaining(String keyword);
 }

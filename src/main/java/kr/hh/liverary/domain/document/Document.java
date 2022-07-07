@@ -18,7 +18,7 @@ public class Document {
     @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 50, nullable = false)
     private String writer;
 
     @Builder

@@ -59,4 +59,25 @@ public class DocumentRepoTest extends DocumentServiceAndRepoTestCommon {
             assertThat(allItems.get(0).getWriter(), is(nonLoginWriterIp));
         }
     }
+
+    @DisplayName("검색 관련 테스트")
+    @Nested
+    class Inquiry implements CrudInterface.InquiryTestInterface {
+        @Override
+        public void findAll() throws Exception {
+
+        }
+
+        @DisplayName("1.1. 키워드 검색")
+        @Test
+        public void findByTitleContaining() throws Exception{
+            storeItem(loginWriter, slangTitle1);
+
+            List<Document> documentList = repo.findByTitleContaining("킹");
+
+            assertThat(documentList.size(), is(1));
+            assertThat(documentList.get(0).getTitle(), is(slangTitle1));
+        }
+
+    }
 }

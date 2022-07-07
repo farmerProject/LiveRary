@@ -5,13 +5,24 @@ import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
 import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
 import kr.hh.liverary.domain.exception.document.NoSuchDocumentException;
 import kr.hh.liverary.domain.exception.document.TitleDuplicatedException;
+import kr.hh.liverary.service.LogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 @ControllerAdvice
 public class ExceptionHandlerController {
+
+    private LogService logger;
+    @Autowired
+    ExceptionHandlerController(LogService logger) {
+        this.logger = logger;
+    }
 
     @ResponseStatus(value = HttpStatus.CONFLICT, reason = ExceptionMessage.DUPLICATED_TITLE)
     @ExceptionHandler(TitleDuplicatedException.class)
@@ -38,7 +49,14 @@ public class ExceptionHandlerController {
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = ExceptionMessage.UNEXPECTED_ERROR)
     @ExceptionHandler(Exception.class)
-    public void unexpectedError() {
-        System.out.println("This is unexpected error");
+    public void unexpectedError(Exception e) {
+        logger.error("Unexpected error: " + e.getMessage());
+        logger.error(getStackString(e));
+    }
+
+    private String getStackString(Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 }

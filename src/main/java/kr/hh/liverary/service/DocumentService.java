@@ -6,15 +6,22 @@ import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
 import kr.hh.liverary.domain.exception.document.TitleDuplicatedException;
 import kr.hh.liverary.dto.DocumentRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class DocumentService {
 
-    private final DocumentRepository repo;
+    private DocumentRepository repo;
+
+    @Autowired
+    public DocumentService(DocumentRepository repo) {
+        this.repo = repo;
+    }
 
     public String getTitleFromCreatedItem(DocumentRequestDto dto) throws Exception {
         return create(dto).getTitle();
@@ -52,5 +59,9 @@ public class DocumentService {
 
     public Document findByTitle(String title) {
         return repo.findByTitle(title);
+    }
+
+    public List<Document> findByTitleContaining(String keyword) {
+        return repo.findByTitleContaining(keyword);
     }
 }

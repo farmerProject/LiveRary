@@ -1,6 +1,7 @@
 package kr.hh.liverary.service;
 
 import kr.hh.liverary.common.interfaces.CrudInterface;
+import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
 import kr.hh.liverary.domain.exception.document.TitleDuplicatedException;
 import kr.hh.liverary.dto.DocumentRequestDto;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -95,7 +98,7 @@ public class DocumentServiceTest extends DocumentServiceAndRepoTestCommon {
                     .build();
 
             // when
-            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Assertions.assertThrows(TitleDuplicatedException.class, () -> {
                 service.modify(slangTitle1, dto);
             });
         }
@@ -132,6 +135,37 @@ public class DocumentServiceTest extends DocumentServiceAndRepoTestCommon {
                 service.modify(slangTitle1, dto);
             });
 
+        }
+    }
+
+    @DisplayName("검색관련테스트")
+    @Nested
+    class Inquery implements CrudInterface.InquiryTestInterface {
+        @Override
+        public void findAll() throws Exception {
+
+        }
+
+        @DisplayName("1.1. 키워드 검색 - 성공")
+        @Test
+        public void findByTitleContaining() throws Exception{
+            storeItem(loginWriter, slangTitle1);
+
+            List<Document> documentList = service.findByTitleContaining("킹");
+
+            assertThat(documentList.size(), is(1));
+            assertThat(documentList.get(0).getTitle(), is(slangTitle1));
+        }
+
+        @DisplayName("2.1. 키워드 검색 - 실패(데이터 없음)")
+        @Test
+        public void findByTitleContainingNoData() throws Exception{
+            storeItem(loginWriter, slangTitle1);
+
+            List<Document> documentList = service.findByTitleContaining("루");
+
+            assertThat(documentList.size(), is(0));
+//            assertThat(documentList.get(0).getTitle(), is(slangTitle1));
         }
     }
 }
