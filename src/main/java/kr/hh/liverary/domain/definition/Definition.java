@@ -21,6 +21,9 @@ public class Definition {
     @Column(columnDefinition = "text", nullable = false)
     private String content;
 
+    @Column
+    private int likes;
+
     @ManyToOne
     @JoinColumn(name = "DOCUMENT_ID")
     private Document document;
@@ -30,11 +33,17 @@ public class Definition {
         this.writer = writer;
         this.content = content;
         this.document = document;
+        this.likes = 0;
     }
 
     public Definition update(String writer, String content) {
         this.writer = writer;
         this.content = content;
+        return this;
+    }
+
+    public Definition updateLikes(int change) {
+        this.likes += change;
         return this;
     }
 

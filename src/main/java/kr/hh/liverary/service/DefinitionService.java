@@ -42,25 +42,6 @@ public class DefinitionService {
         return savedItemId;
     }
 
-//    @Transactional
-//    public Long createContentWithDocument(ContentRequestDto contentDto) throws Exception {
-//        Document document = contentDto.getDocument();
-//        DocumentRequestDto documentDto = DocumentRequestDto.builder()
-//                .title(document.getTitle())
-//                .writer(document.getWriter())
-//        .build();
-//        documentService.create(documentDto);
-//        ContentRequestDto contentWithDocument
-//                = ContentRequestDto.builder()
-//                                .document(document)
-//                                .writer(contentDto.getWriter())
-//                                .content(contentDto.getContent())
-//                .build();
-//        Long savedItemId = storeItem(contentWithDocument.toEntity()).getId();
-//
-//        return savedItemId;
-//    }
-
     private Definition storeItem(Definition content) throws Exception {
         return repo.save(content);
     }
@@ -71,6 +52,15 @@ public class DefinitionService {
                 .orElseThrow(() -> new RequestedItemIsNotFoundException());
         Definition modified = targetContent.update(contentDto.getWriter(), contentDto.getContent());
         return modified.getId();
+    }
+
+    @Transactional
+    public int updateLikes(Long contentId, boolean liked) throws Exception {
+        Definition targetDefinition = repo.findById(contentId)
+                .orElseThrow(() -> new RequestedItemIsNotFoundException());
+        int changedLikes = liked ? targetDefinition.getLikes() + 1 : targetDefinition.getLikes() - 1;
+        targetDefinition.updateLikes(changedLikes);
+        return changedLikes;
     }
 
     @Transactional

@@ -179,6 +179,44 @@ public class DefinitionControllerTest extends DefinitionControllerTestCommon {
             assertThat(content.getDocument().getTitle()).isEqualTo(defaultDocument.getTitle());
         }
 
+        @DisplayName("1.2. 좋아요")
+        @Test
+        public void testLike() throws Exception {
+            // given
+            Definition savedItem = storeItem(nonLoginWriterIp, content2, defaultDocument);
+            String url = prefixUrl + apiVersion + "/definitions/" + savedItem.getId() + "/like";
+
+            // when
+            mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":{\"likes\":" + (savedItem.getLikes() + 1) + "}}"))
+                    .andDo(print());
+            // then
+            List<Definition> all = contentRepo.findAll();
+            assertThat(all.size()).isEqualTo(1);
+            Definition content = all.get(0);
+            assertThat(content.getLikes()).isEqualTo(savedItem.getLikes() + 1);
+        }
+
+        @DisplayName("1.3. 싫어요")
+        @Test
+        public void dislike() throws Exception {
+            // given
+            Definition savedItem = storeItem(nonLoginWriterIp, content2, defaultDocument);
+            String url = prefixUrl + apiVersion + "/definitions/" + savedItem.getId() + "/dislike";
+
+            // when
+            mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json("{\"message\":\"CREATED\",\"code\":201,\"data\":{\"likes\":" + (savedItem.getLikes() - 1) + "}}"))
+                    .andDo(print());
+            // then
+            List<Definition> all = contentRepo.findAll();
+            assertThat(all.size()).isEqualTo(1);
+            Definition content = all.get(0);
+            assertThat(content.getLikes()).isEqualTo(savedItem.getLikes() - 1);
+        }
+
         @DisplayName("2.1. 존재하지 않는 항목에 대한 수정 시도-404")
         @Test
         public void failNoSuchDefinition() throws Exception {

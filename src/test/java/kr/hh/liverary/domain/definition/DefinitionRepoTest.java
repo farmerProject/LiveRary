@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @SpringBootTest
-public class ContentRepoTestDocument extends DefinitionServiceAndRepoTest {
+public class DefinitionRepoTest extends DefinitionServiceAndRepoTest {
 
     @DisplayName("ContentRepo - 추가관련테스트")
     @Nested
@@ -34,6 +34,7 @@ public class ContentRepoTestDocument extends DefinitionServiceAndRepoTest {
             assertThat(list.size(), is(1));
             assertThat(list.get(0).getContent(), is(defaultContent));
             assertThat(list.get(0).getWriter(), is(loginWriter));
+            assertThat(list.get(0).getLikes(), is(0));
             assertThat(list.get(0).getDocument().getId(), is(defaultDocument.getId()));
         }
     }
@@ -61,6 +62,26 @@ public class ContentRepoTestDocument extends DefinitionServiceAndRepoTest {
             assertThat(list.size(), is(1));
             assertThat(list.get(0).getContent(), is(content2));
             assertThat(list.get(0).getWriter(), is(nonLoginWriterIp));
+        }
+
+        @DisplayName("1.1. 좋아요/싫어요 시 좋아요 수 변경")
+        @Test
+        public void updateLikes() throws Exception {
+            // given
+            Definition prevContent = storeItem(loginWriter, defaultContent, defaultDocument);
+            Long contentId = prevContent.getId();
+            int previousLikes = prevContent.getLikes();
+
+            // when
+            Definition modifiedContent = repo.findById(contentId).map(
+                    entity -> entity.updateLikes(previousLikes+1)
+            ).get();
+            storeItem(modifiedContent);
+
+            // then
+            List<Definition> list = repo.findAll();
+            assertThat(list.size(), is(1));
+            assertThat(list.get(0).getLikes(), is(previousLikes+1));
         }
     }
 

@@ -74,6 +74,38 @@ public class DefinitionController {
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
 
+    @PutMapping("/v1/definitions/{id}/like")
+    public ResponseEntity like(@PathVariable Long id) throws Exception {
+        ApiResultItem result = null;
+        Map<String, Long> data = new HashMap<String, Long>();
+
+        long likes = service.updateLikes(id, true);
+        data.put("likes", likes);
+        result = ApiResultItem.builder()
+                .code(HttpStatusCode.CREATED.getCode())
+                .message(HttpStatusCode.CREATED.toString())
+                .data(data)
+                .build();
+
+        return new ResponseEntity(result, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/v1/definitions/{id}/dislike")
+    public ResponseEntity dislike(@PathVariable Long id) throws Exception {
+        ApiResultItem result = null;
+        Map<String, Long> data = new HashMap<String, Long>();
+
+        long likes = service.updateLikes(id, false);
+        data.put("likes", likes);
+        result = ApiResultItem.builder()
+                .code(HttpStatusCode.CREATED.getCode())
+                .message(HttpStatusCode.CREATED.toString())
+                .data(data)
+                .build();
+
+        return new ResponseEntity(result, HttpStatus.CREATED);
+    }
+
     @GetMapping("/v1/documents/{title}/definitions")
     public ResponseEntity findByDocument(@PathVariable String title) throws Exception {
         ApiResultItem result = null;

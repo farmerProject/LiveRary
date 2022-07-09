@@ -48,39 +48,11 @@ public class DefinitionServiceTest extends DefinitionServiceAndRepoTest {
             assertThat(allItems.size()).isEqualTo(1);
             Definition savedItem = allItems.get(0);
             assertThat(savedItem.getContent()).isEqualTo(defaultContent);
+            assertThat(savedItem.getLikes()).isEqualTo(0);
             assertThat(savedItem.getWriter()).isEqualTo(loginWriter);
             assertThat(savedItem.getDocument().getId()).isEqualTo(defaultDocument.getId());
             assertThat(savedItem.getId()).isEqualTo(returnedId);
         }
-
-//        @Test
-//        @DisplayName("1.2. Document 추가 후 Content 추가-성공")
-//        public void saveDocumentThenSaveContent() throws Exception {
-//            // given
-//            Document newDocument = Document.builder()
-//                    .title("new Document")
-//                    .writer(nonLoginWriterIp)
-//            .build();
-//            ContentRequestDto dto = ContentRequestDto.builder()
-//                    .content(defaultContent)
-//                    .writer(loginWriter)
-//                    .document(newDocument)
-//            .build();
-//
-//            // when
-//            Long returnedId = service.createContentWithDocument(dto);
-//
-//
-//            // then
-//            List<Content> allItems = repo.findAll();
-//            assertThat(allItems.size()).isEqualTo(1);
-//            Content savedItem = allItems.get(0);
-//            assertThat(savedItem.getContent()).isEqualTo(defaultContent);
-//            assertThat(savedItem.getWriter()).isEqualTo(loginWriter);
-//            assertThat(savedItem.getDocument().getTitle()).isEqualTo(newDocument.getTitle());
-//
-//            assertThat(savedItem.getId()).isEqualTo(returnedId);
-//        }
 
         @Test
         @DisplayName("2.1. Document를 지정하지 않아 저장실패-예외발생")
@@ -152,6 +124,38 @@ public class DefinitionServiceTest extends DefinitionServiceAndRepoTest {
             Definition foundItem = allItems.get(0);
             assertThat(foundItem.getContent()).isEqualTo(content2);
             assertThat(foundItem.getWriter()).isEqualTo(nonLoginWriterIp);
+        }
+
+        @DisplayName("1.2. 좋아요")
+        @Test
+        public void likeTesting() throws Exception {
+            // given
+            Definition defaultItem = storeItem(loginWriter, defaultContent, defaultDocument);
+
+            // when
+            service.updateLikes(defaultItem.getId(), true);
+
+            // then
+            List<Definition> allItems = repo.findAll();
+            assertThat(allItems.size()).isEqualTo(1);
+            Definition foundItem = allItems.get(0);
+            assertThat(foundItem.getLikes()).isEqualTo(defaultItem.getLikes()+1);
+        }
+
+        @DisplayName("1.3. 싫어요")
+        @Test
+        public void dislikeTesting() throws Exception {
+            // given
+            Definition defaultItem = storeItem(loginWriter, defaultContent, defaultDocument);
+
+            // when
+            service.updateLikes(defaultItem.getId(), false);
+
+            // then
+            List<Definition> allItems = repo.findAll();
+            assertThat(allItems.size()).isEqualTo(1);
+            Definition foundItem = allItems.get(0);
+            assertThat(foundItem.getLikes()).isEqualTo(defaultItem.getLikes()-1);
         }
 
         @DisplayName("2.1. 존재하지 않는 항목에 대한 수정 시도-예외발생")
