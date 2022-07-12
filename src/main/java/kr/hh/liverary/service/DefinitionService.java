@@ -58,9 +58,9 @@ public class DefinitionService {
     public int updateLikes(Long contentId, boolean liked) throws Exception {
         Definition targetDefinition = repo.findById(contentId)
                 .orElseThrow(() -> new RequestedItemIsNotFoundException());
-        int changedLikes = liked ? targetDefinition.getLikes() + 1 : targetDefinition.getLikes() - 1;
-        targetDefinition.updateLikes(changedLikes);
-        return changedLikes;
+        int changedLikes = liked ?  1 : -1;
+        Definition updated = targetDefinition.updateLikes(changedLikes);
+        return updated.getLikes();
     }
 
     @Transactional
