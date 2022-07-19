@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import { InputGroup } from "react-bootstrap";
@@ -6,8 +7,8 @@ import { Button } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function Header(props){
   const [userName, setUserName] = useState("");
@@ -15,11 +16,14 @@ function Header(props){
   const [userEmail, setUserEmail] = useState("");
   const [userIp, setUserIp] = useState("");
 
+  const [searchName, setSearchName] = useState("");
+  let navigate = useNavigate();
+
   const imgStyle = {
     height: 35,
     width: 35,
   };
-  const request = () => {
+  const getUserInfo = () => {
       axios
         .get("http://localhost:8080/api/v1/user")
         .then((response) => {
@@ -36,11 +40,6 @@ function Header(props){
         .catch((error) => {});
     };
 
-    const loginBtnClicked = (event) => {
-      event.preventDefault();
-      props.setShowLoginModal(true);
-    };
-
     const getUserIp = () => {
       axios
       .get("https://geolocation-db.com/json/0f761a30-fe14-11e9-b59f-e53803842572")
@@ -51,10 +50,32 @@ function Header(props){
         })
         .catch((error) => {});
     };
+
+    //로그인 버튼
+    const loginBtnClicked = (event) => {
+      event.preventDefault();
+      props.setShowLoginModal(true);
+    };
+
+    //검색 버튼
+    const searchClicked = (event) => {
+      event.preventDefault();
+      props.setSearchName(searchName);
+      console.log("헤드에서 검색클릭");
+      navigate(`/searchView`, {state: {searchName: searchName}});
+
+    };
+
+    const onChangeSearchBar = (event) => {
+       // console.log(event.target.value);
+        const searchText = event.target.value;
+        setSearchName(searchText);
+    };
+
     
     useEffect(() => {
       getUserIp();
-      request();
+      getUserInfo();
     }, []);
 
     return (
@@ -72,20 +93,15 @@ function Header(props){
                     placeholder="Search Word here...."
                     aria-label="Search Word here...."
                     aria-describedby="basic-addon2"
+                    onChange={onChangeSearchBar}
                     />
                 <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active
-                href={`/searchView`}
+                href="/searchView" onClick={searchClicked}
                 >
                 Search
                 </Button>
                 </InputGroup>
               </div>
-              <div className={styles.btn2}>
-                <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active href="/writer">
-                  +
-                </Button>
-              </div>
-                
                 <div className={styles.btn3}>
                 {userName === "" ? (
                         <Button variant="dark" className={styles.searchBtn} id="button-search" size="lg" active

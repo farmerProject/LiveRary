@@ -10,7 +10,7 @@ function ViewList({id, content , title}){
     return (
     <div>
         <div className={styles.viewer_title}>
-                <Link to={`/definitions/${id}`}>{title}</Link>
+                <Link to={`/definitions/{id}`}>{title}</Link>
         </div>
         <div className={styles.viewer_content}>
             <Viewer

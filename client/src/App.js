@@ -6,7 +6,7 @@ import Footer from "./routes/Footer";
 import Writer from "./routes/Writer";
 import Viewer from "./routes/Viewer";
 import SearchView from "./routes/SearchView";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route , Outlet } from "react-router-dom";
 import axios from "axios";
 
 function App() {
@@ -21,6 +21,8 @@ function App() {
   const [userId, setUserId] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userIp, setUserIp] = useState("");
+
+  const [searchName, setSearchName] = useState("");
 
   useEffect(() => {
     const appName = "LiveRARY";
@@ -37,6 +39,7 @@ function App() {
         setUserId={setUserId}
         setUserEmail={setUserEmail}
         setUserIp={setUserIp}
+        setSearchName={setSearchName}
     />
     <hr />
     <Routes>
@@ -75,6 +78,7 @@ function App() {
           userName={userName}
           showLoginModal={showLoginModal}
           setShowLoginModal={setShowLoginModal}
+          searchName={searchName}
           />
         }
       />
