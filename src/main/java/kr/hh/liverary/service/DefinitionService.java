@@ -4,7 +4,7 @@ import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.domain.definition.DefinitionRepository;
 import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
-import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
+import kr.hh.liverary.domain.exception.document.InvalidParameterException;
 import kr.hh.liverary.domain.exception.document.NoSuchDocumentException;
 import kr.hh.liverary.dto.ContentRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class DefinitionService {
 
     @Transactional
     public Long create(ContentRequestDto dto) throws Exception {
-        if(dto.getDocument() == null) throw new NoDocumentParameterException();
+        if(dto.getDocument() == null) throw new InvalidParameterException();
         Document document = documentService.findByTitle(dto.getDocument().getTitle());
 
         if(document == null) throw new NoSuchDocumentException();

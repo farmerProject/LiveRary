@@ -2,7 +2,7 @@ package kr.hh.liverary.controller;
 
 import kr.hh.liverary.domain.exception.ExceptionMessage;
 import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
-import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
+import kr.hh.liverary.domain.exception.document.InvalidParameterException;
 import kr.hh.liverary.domain.exception.document.NoSuchDocumentException;
 import kr.hh.liverary.domain.exception.document.TitleDuplicatedException;
 import kr.hh.liverary.service.LogService;
@@ -34,8 +34,8 @@ public class ExceptionHandlerController {
     public void itemNotFounded() {
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = ExceptionMessage.NO_DOCUMENT_PARAMETER)
-    @ExceptionHandler(NoDocumentParameterException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = ExceptionMessage.THE_PARAMETER_IS_INVALID)
+    @ExceptionHandler(InvalidParameterException.class)
     public void noDoumentParameter() {
 
     }

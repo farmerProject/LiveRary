@@ -5,7 +5,7 @@ import kr.hh.liverary.common.interfaces.CrudInterface;
 import kr.hh.liverary.domain.definition.Definition;
 import kr.hh.liverary.domain.document.Document;
 import kr.hh.liverary.domain.exception.RequestedItemIsNotFoundException;
-import kr.hh.liverary.domain.exception.document.NoDocumentParameterException;
+import kr.hh.liverary.domain.exception.document.InvalidParameterException;
 import kr.hh.liverary.domain.exception.document.NoSuchDocumentException;
 import kr.hh.liverary.dto.ContentRequestDto;
 import org.junit.jupiter.api.Assertions;
@@ -64,7 +64,7 @@ public class DefinitionServiceTest extends DefinitionServiceAndRepoTest {
             .build();
 
             // when
-            Assertions.assertThrows(NoDocumentParameterException.class, () -> {
+            Assertions.assertThrows(InvalidParameterException.class, () -> {
                 service.create(dto);
             });
 

@@ -7,7 +7,7 @@ public class ExceptionMessage {
 
     //document
     public static final String DUPLICATED_TITLE = "The document title is already in the use.";
-    public static final String NO_DOCUMENT_PARAMETER = "The request has no document parameter.";
+    public static final String THE_PARAMETER_IS_INVALID = "The parameter is invalid.";
     public static final String NO_SUCH_DOCUMENT = "The document does not exist in the database.";
 
     // content
