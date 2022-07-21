@@ -12,9 +12,7 @@ function SearchView({ showLoginModal, setShowLoginModal }){
     let location = useLocation();
 
     const searchName = location.state.searchName;
-
-    console.log("검색화면----");
-    console.log(searchName);
+    console.log("검색화면::" + searchName);
 
       const getList = async () => {
         //const url ="http://localhost:8080/api/v1/documents/search";//"https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year";
@@ -22,9 +20,6 @@ function SearchView({ showLoginModal, setShowLoginModal }){
           const response = await axios.get("http://localhost:8080/api/v1/documents/search" , {params: {keyword : searchName}});
           setDefinitionList(response.data.data.datas);
           const flag = response.data.data.datas.length;
-          //setSearching(false);
-          //items가 null이면 setSearching(true);
-          console.log(definitionList.length);
           if(flag == 0){
            setSearching(true);
           }
@@ -40,7 +35,7 @@ function SearchView({ showLoginModal, setShowLoginModal }){
 
       useEffect(() => {
         getList();
-      }, []);
+      }, [searchName]);
 
     return (
 

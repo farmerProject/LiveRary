@@ -61,7 +61,6 @@ function Header(props){
     const searchClicked = (event) => {
       event.preventDefault();
       props.setSearchName(searchName);
-      console.log("헤드에서 검색클릭");
       navigate(`/searchView`, {state: {searchName: searchName}});
 
     };
