@@ -22,17 +22,16 @@ public class Liked {
     @JoinColumn(name = "DEFINITION_ID")
     private Definition definition;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @Column(length = 50, nullable = false)
+    private String writer;
 
     @Column
     private boolean isLiked;
 
     @Builder
-    public Liked(User user, Definition definition, boolean isLiked) {
+    public Liked(String writer, Definition definition, boolean isLiked) {
         this.definition = definition;
-        this.user = user;
+        this.writer = writer;
         this.isLiked = isLiked;
     }
 }

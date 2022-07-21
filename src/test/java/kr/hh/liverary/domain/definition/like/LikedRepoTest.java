@@ -2,7 +2,6 @@ package kr.hh.liverary.domain.definition.like;
 
 import kr.hh.liverary.common.definition.DefinitionAction;
 import kr.hh.liverary.common.document.DocumentAction;
-import kr.hh.liverary.common.interfaces.CrudInterface;
 import kr.hh.liverary.common.interfaces.TempTestInterface;
 import kr.hh.liverary.config.auth.CustomOAuth2UserService;
 import kr.hh.liverary.config.auth.dto.OAuthAttributes;
@@ -63,22 +62,21 @@ public class LikedRepoTest implements TempTestInterface {
     }
 
     private Liked storeItem(Definition definition, boolean isLiked) {
-        Liked liked = repo.save(Liked.builder().user(mockUser).definition(definition).isLiked(isLiked).build());
+        Liked liked = repo.save(Liked.builder().writer(mockUser.getEmail()).definition(definition).isLiked(isLiked).build());
         return liked;
     }
 
-    private Liked storeItem(Definition definition, boolean isLiked, User user) {
-        Liked liked = repo.save(Liked.builder().user(user).definition(definition).isLiked(isLiked).build());
+    private Liked storeItem(Definition definition, boolean isLiked, String writerIp) {
+        Liked liked = repo.save(Liked.builder().writer(writerIp).definition(definition).isLiked(isLiked).build());
         return liked;
     }
 
     @DisplayName("1. 추가 관련 테스트")
     @Nested
-    class Create implements CrudInterface.CreateTestInterface {
-        @Override
-        @DisplayName("1.1.1. 좋아요 정상적으로 추가한다.")
+    class Create {
+        @DisplayName("1.1.1. 좋아요를 정상적으로 추가한다.")
         @Test
-        public void success() throws Exception {
+        public void liked() throws Exception {
             Liked liked = storeItem(defaultDefinition, true);
             List<Liked> likedList = repo.findAll();
 
@@ -87,9 +85,9 @@ public class LikedRepoTest implements TempTestInterface {
             assertThat(likedList.size(), is(1));
         }
 
-        @DisplayName("1.1.2. 싫어요 정상적으로 추가한다.")
+        @DisplayName("1.1.2. 싫어요를 정상적으로 추가한다.")
         @Test
-        public void success_disliked() throws Exception {
+        public void disliked() throws Exception {
             Liked liked = storeItem(defaultDefinition, false);
             List<Liked> likedList = repo.findAll();
 
@@ -102,15 +100,10 @@ public class LikedRepoTest implements TempTestInterface {
 
     @DisplayName("2. 삭제 관련 테스트")
     @Nested
-    class Remove implements CrudInterface.RemoveTestInterface {
-        @Override
-        public void removeAll() throws Exception {
-            assertThat(1, is(1)); // 사용하지 않음
-        }
-
+    class Remove{
         @DisplayName("2.1. 좋아요/싫어요 삭제를 성공한다.")
         @Test
-        public void success_remove() throws Exception {
+        public void removeLikeOrDislike() throws Exception {
             Definition tempDefinition = definitionAction.storeItem(loginWriter, "현실자각타임임!!", defaultDocument);
             Liked liked = storeItem(defaultDefinition, false);
             storeItem(tempDefinition, true);
@@ -125,48 +118,59 @@ public class LikedRepoTest implements TempTestInterface {
 
     @DisplayName("3. 조회 관련 테스트")
     @Nested
-    class Inquiry implements CrudInterface.InquiryTestInterface {
-
-        @Override
-        public void findAll() throws Exception {
-            assertThat(1, is(1)); // 전체조회는 사용하지 않는다.
-        }
+    class Inquiry{
 
         @DisplayName("3.1. 특정 게시물의 좋아요/싫어요 컬럼의 전체 개수를 확인한다.")
         @Test
-        public void test_likedCountByDefinitionId() throws Exception {
+        public void getLikedCountByDefinitionId() throws Exception {
             OAuthAttributes attr = new OAuthAttributes(null, null, "zzz", "df@a.com", pictureUrl);
-            User tempUser = userService.saveOrUpdate(attr);
             Definition tempDefinition = definitionAction.storeItem(loginWriter, "현실자각타임임!!", defaultDocument);
 
             storeItem(defaultDefinition, true);
-            storeItem(defaultDefinition, true, tempUser);
+            storeItem(defaultDefinition, true, "192.168.0.1");
             storeItem(defaultDefinition, true);
             storeItem(defaultDefinition, false); //
             storeItem(tempDefinition, true);
 
-            int count = repo.countByDefinitionId(defaultDefinition.getId());
+            int count = repo.countByDefinitionIdAndIsLiked(defaultDefinition.getId(), true);
 
-            assertThat(count, is(4));
+            assertThat(count, is(3));
         }
 
         @DisplayName("3.2. 특정 유저가 특정 게시물에 대한 좋아요/싫어요를 한 횟수를 확인한다.")
         @Test
-        public void test_likedCountByDefinitionIdAndUserId() throws Exception {
-            OAuthAttributes attr = new OAuthAttributes(null, null, "zzz", "df@a.com", pictureUrl);
-            User tempUser = userService.saveOrUpdate(attr);
+        public void getLikedCountByDefinitionIdAndWriter() throws Exception {
             Definition tempDefinition = definitionAction.storeItem(loginWriter, "현실자각타임임!!", defaultDocument);
 
             storeItem(defaultDefinition, true);
             storeItem(defaultDefinition, true);
-            storeItem(defaultDefinition, true, tempUser);
+            storeItem(defaultDefinition, true, "192.168.0.1");
             storeItem(defaultDefinition, false); //
             storeItem(tempDefinition, true);
 
-            int count = repo.countByDefinitionIdAndUserId(defaultDefinition.getId(), mockUser.getId());
+            int count = repo.countByDefinitionIdAndWriter(defaultDefinition.getId(), "192.168.0.1");
 
-            assertThat(count, is(3));
+            assertThat(count, is(1));
         }
+
+        @DisplayName("3.3. 작성자와 definition으로 좋아요를 조회한다.")
+        @Test
+        public void findByDefinitionAndWriter() throws Exception {
+            Definition tempDefinition = definitionAction.storeItem(loginWriter, "현실자각타임임!!", defaultDocument);
+
+            storeItem(defaultDefinition, true);
+            storeItem(defaultDefinition, true, "192.168.0.1");
+            storeItem(defaultDefinition, true);
+            storeItem(defaultDefinition, false); //
+            storeItem(tempDefinition, true);
+
+            Liked liked = repo.findByDefinitionAndWriter(defaultDefinition, "192.168.0.1");
+
+            assertThat(liked.getDefinition().getContent(), is(defaultDefinition.getContent()));
+            assertThat(liked.getWriter(), is("192.168.0.1"));
+
+        }
+
     }
 
 }
