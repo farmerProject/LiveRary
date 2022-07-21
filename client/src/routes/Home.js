@@ -13,9 +13,9 @@ function Home({ showLoginModal, setShowLoginModal }){
     const url ="http://localhost:8080/api/v1/definitions/latest/50";//"https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year";
     axios.get(url)
     .then(function(response){
-    console.log(response.data.data);
-    console.log(response.data.data.items);
-
+    console.log("Test");
+    //console.log(response.data);
+    //console.log(response.data.data.items.document.title);
 
     setDefinitionList(response.data.data.items);
       //setDefinitionList(response.data.data.movies); //전체 틀 끝나면 url 수정하기
@@ -39,8 +39,8 @@ function Home({ showLoginModal, setShowLoginModal }){
           {definitionList.map((definition) => (
             <Viewer key={definition.id} 
                   id={definition.id}
-                  content={definition.content}
                   title={definition.document.title}
+                  content={definition.content}
             />
 
           ))}
