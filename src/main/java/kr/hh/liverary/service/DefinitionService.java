@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +21,7 @@ public class DefinitionService {
 
     private DefinitionRepository repo;
     private DocumentService documentService;
+
 
     @Autowired
     public DefinitionService(DefinitionRepository repo, DocumentService documentService) {
@@ -73,5 +75,10 @@ public class DefinitionService {
     @Transactional
     public List<Definition> findTop50ByOrderByIdDesc() throws Exception{
         return repo.findTop50ByOrderByIdDesc();
+    }
+
+    @Transactional
+    public Optional<Definition> findById(Long definitionId) throws Exception{
+        return repo.findById(definitionId);
     }
 }
